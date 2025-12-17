@@ -98,53 +98,63 @@ export const Sidebar: React.FC<SidebarProps> = ({
           key={event.id}
           onClick={() => onSelectEvent(event)}
           className={`
-            p-3 rounded-lg cursor-pointer transition-all duration-300
-            animate-fade-in border
+            p-3 rounded-xl cursor-pointer transition-all duration-300
+            animate-fade-in border group
             ${isSelected 
-              ? 'glass border-opacity-100' 
-              : 'bg-white/5 hover:bg-white/10 border-transparent hover:border-white/10'
+              ? 'glass-card border-opacity-100' 
+              : 'bg-white/[0.02] hover:bg-white/[0.05] border-white/[0.03] hover:border-white/10'
             }
           `}
           style={{ 
-            animationDelay: `${index * 50}ms`,
-            borderColor: isSelected ? info.borderColor : undefined,
-            boxShadow: isSelected ? `0 0 20px ${info.color}20` : undefined,
+            animationDelay: `${index * 30}ms`,
+            borderColor: isSelected ? `${info.color}50` : undefined,
+            boxShadow: isSelected ? `0 4px 24px ${info.color}15, inset 0 1px 0 rgba(255,255,255,0.05)` : undefined,
           }}
         >
           <div className="flex items-start gap-3">
             <div 
-              className="p-2 rounded-lg flex-shrink-0 relative"
-              style={{ backgroundColor: info.bgColor }}
+              className="p-2.5 rounded-xl flex-shrink-0 relative transition-transform duration-300 group-hover:scale-105"
+              style={{ 
+                background: `linear-gradient(135deg, ${info.color}20, ${info.color}10)`,
+                border: `1px solid ${info.color}30`,
+              }}
             >
               <span style={{ color: info.color }}>
                 {categoryIcons[event.category]}
               </span>
               {event.magnitude && (
                 <span 
-                  className="absolute -top-1 -right-1 text-[10px] font-bold px-1 rounded"
-                  style={{ backgroundColor: info.color, color: '#000' }}
+                  className="absolute -top-1.5 -right-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded-md shadow-lg"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${info.color}, ${info.color}cc)`,
+                    color: '#000',
+                    boxShadow: `0 2px 8px ${info.color}40`,
+                  }}
                 >
                   {event.magnitude.toFixed(1)}
                 </span>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-sm font-medium text-white truncate flex-1">
+              <div className="flex items-center gap-2 mb-1.5">
+                <h3 className="text-sm font-semibold text-white truncate flex-1 group-hover:text-white/90 transition-colors">
                   {event.title}
                 </h3>
                 {alertStyle.pulse && (
-                  <span className={`w-2 h-2 rounded-full ${alertStyle.text.replace('text-', 'bg-')} animate-pulse`} />
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${alertStyle.text.replace('text-', 'bg-')}`} />
+                    <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${alertStyle.text.replace('text-', 'bg-')}`} />
+                  </span>
                 )}
               </div>
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 <span 
-                  className={`text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase ${severityStyle.bg} ${severityStyle.text} border ${severityStyle.border}`}
+                  className={`text-[9px] px-2 py-0.5 rounded-md font-bold uppercase tracking-wider ${severityStyle.bg} ${severityStyle.text} border ${severityStyle.border}`}
                 >
                   {severity}
                 </span>
                 {event.estimatedAffected && event.estimatedAffected > 0 && (
-                  <span className="text-[10px] text-gray-400 flex items-center gap-1">
+                  <span className="text-[10px] text-gray-400 flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5">
                     <Users className="w-3 h-3" />
                     {event.estimatedAffected >= 1000000 
                       ? `${(event.estimatedAffected / 1000000).toFixed(1)}M` 
@@ -175,38 +185,41 @@ export const Sidebar: React.FC<SidebarProps> = ({
           key={`weather-${event.city}`}
           onClick={() => onSelectEvent(event)}
           className={`
-            p-3 rounded-lg cursor-pointer transition-all duration-300
-            animate-fade-in border
+            p-3 rounded-xl cursor-pointer transition-all duration-300
+            animate-fade-in border group
             ${isSelected 
-              ? 'glass border-opacity-100' 
-              : 'bg-white/5 hover:bg-white/10 border-transparent hover:border-white/10'
+              ? 'glass-card border-opacity-100' 
+              : 'bg-white/[0.02] hover:bg-white/[0.05] border-white/[0.03] hover:border-white/10'
             }
           `}
           style={{ 
-            animationDelay: `${index * 50}ms`,
-            borderColor: isSelected ? info.borderColor : undefined,
+            animationDelay: `${index * 30}ms`,
+            borderColor: isSelected ? `${info.color}50` : undefined,
           }}
         >
           <div className="flex items-start gap-3">
             <div 
-              className="p-2 rounded-lg flex-shrink-0"
-              style={{ backgroundColor: info.bgColor }}
+              className="p-2.5 rounded-xl flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
+              style={{ 
+                background: `linear-gradient(135deg, ${info.color}20, ${info.color}10)`,
+                border: `1px solid ${info.color}30`,
+              }}
             >
               <Thermometer className="w-4 h-4" style={{ color: info.color }} />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium text-white truncate">
+                <h3 className="text-sm font-semibold text-white truncate group-hover:text-white/90 transition-colors">
                   {event.city}, {event.country}
                 </h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-neon-cyan font-mono">
+                  <span className="text-lg font-bold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent font-mono">
                     {event.temperature}°C
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-2 mt-1 flex-wrap">
-                <span className="text-[10px] text-gray-400">
+              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                <span className="text-[10px] text-gray-400 px-1.5 py-0.5 rounded bg-white/5">
                   {event.description}
                 </span>
                 {event.feelsLike !== undefined && event.feelsLike !== event.temperature && (
@@ -215,7 +228,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </span>
                 )}
                 {event.airQualityIndex !== undefined && event.airQualityIndex > 0 && (
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded ${aqStyle.bg} ${aqStyle.text}`}>
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-semibold ${aqStyle.bg} ${aqStyle.text}`}>
                     AQI {event.airQualityIndex}
                   </span>
                 )}

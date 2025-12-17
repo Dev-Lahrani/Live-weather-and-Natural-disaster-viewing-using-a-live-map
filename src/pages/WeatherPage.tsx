@@ -332,40 +332,55 @@ export const WeatherPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cyber-darker text-white overflow-auto">
+    <div className="min-h-screen bg-[#080810] text-white overflow-auto">
+      {/* Background gradients */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-neon-purple/5 rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-neon-cyan/5 rounded-full blur-[150px]" />
+      </div>
+
       {/* Header */}
-      <header className="glass-darker px-6 py-4 sticky top-0 z-50">
+      <header className="glass-darker px-6 py-3 sticky top-0 z-50 border-b border-white/5">
         <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
             <Link 
               to="/" 
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors text-gray-400 hover:text-white"
+              className="p-2 hover:bg-white/5 rounded-lg transition-all duration-300 text-gray-500 hover:text-white group"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
             </Link>
-            <div className="flex items-center gap-3">
-              <Globe className="w-8 h-8 text-neon-cyan" />
+            <div className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-neon-purple/20 blur-xl rounded-full group-hover:bg-neon-purple/30 transition-all" />
+                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-neon-purple/20 to-neon-cyan/20 border border-neon-purple/30 flex items-center justify-center">
+                  <Globe className="w-5 h-5 text-neon-purple" />
+                </div>
+              </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Global Weather</h1>
-                <p className="text-xs text-gray-400 font-mono">
-                  {weatherData.length} cities worldwide
+                <h1 className="text-lg font-bold tracking-tight">
+                  <span className="bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
+                    Global Weather
+                  </span>
+                </h1>
+                <p className="text-[10px] text-gray-500 font-medium tracking-wide">
+                  {weatherData.length} cities • Real-time data
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {lastUpdated && (
-              <span className="text-xs text-gray-500 font-mono">
-                Updated {lastUpdated.toLocaleTimeString()}
+              <span className="text-[10px] text-gray-500 font-mono px-2 py-1 rounded bg-white/[0.02]">
+                {lastUpdated.toLocaleTimeString()}
               </span>
             )}
             <button
               onClick={fetchAllWeather}
               disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-neon-cyan/20 text-neon-cyan rounded-lg hover:bg-neon-cyan/30 transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-neon-purple/15 to-neon-cyan/15 text-neon-cyan rounded-lg border border-neon-cyan/30 hover:border-neon-cyan/50 transition-all duration-300 disabled:opacity-50 text-sm font-medium group"
             >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : 'group-hover:rotate-45 transition-transform duration-300'}`} />
               Refresh
             </button>
           </div>
@@ -373,26 +388,30 @@ export const WeatherPage: React.FC = () => {
       </header>
 
       {/* Stats Bar */}
-      <div className="px-6 py-4 border-b border-white/10 bg-white/5">
+      <div className="relative px-6 py-4 border-b border-white/5 bg-white/[0.02]">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <Thermometer className="w-5 h-5 text-neon-cyan" />
-              <span className="text-sm text-gray-400">Global Avg:</span>
-              <span className="text-lg font-mono font-bold text-white">{avgTemp}°C</span>
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/[0.03] border border-white/5">
+              <div className="w-6 h-6 rounded bg-neon-cyan/15 flex items-center justify-center">
+                <Thermometer className="w-3.5 h-3.5 text-neon-cyan" />
+              </div>
+              <span className="text-xs text-gray-500">Avg</span>
+              <span className="text-lg font-bold font-mono bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">{avgTemp}°C</span>
             </div>
             {hottestCity && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/5 border border-red-500/10">
                 <TrendingUp className="w-4 h-4 text-red-400" />
-                <span className="text-sm text-gray-400">Hottest:</span>
-                <span className="text-sm font-mono text-red-400">{hottestCity.city} {maxTemp}°C</span>
+                <span className="text-xs text-gray-500">Hottest</span>
+                <span className="text-sm font-bold font-mono text-red-400">{hottestCity.city}</span>
+                <span className="text-sm font-mono text-red-400/70">{maxTemp}°</span>
               </div>
             )}
             {coldestCity && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-500/5 border border-blue-500/10">
                 <TrendingDown className="w-4 h-4 text-blue-400" />
-                <span className="text-sm text-gray-400">Coldest:</span>
-                <span className="text-sm font-mono text-blue-400">{coldestCity.city} {minTemp}°C</span>
+                <span className="text-xs text-gray-500">Coldest</span>
+                <span className="text-sm font-bold font-mono text-blue-400">{coldestCity.city}</span>
+                <span className="text-sm font-mono text-blue-400/70">{minTemp}°</span>
               </div>
             )}
           </div>
@@ -400,21 +419,21 @@ export const WeatherPage: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="px-6 py-4 border-b border-white/10 flex items-center gap-4 flex-wrap">
+      <div className="relative px-6 py-4 border-b border-white/5 flex items-center gap-4 flex-wrap">
         {/* Search */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search cities..."
-            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan/50"
+            className="w-full pl-10 pr-10 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan/40 focus:bg-white/[0.05] transition-all duration-300"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -422,15 +441,15 @@ export const WeatherPage: React.FC = () => {
         </div>
 
         {/* Region Filter */}
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-1.5 flex-wrap">
           {regions.map((region) => (
             <button
               key={region}
               onClick={() => setSelectedRegion(region)}
-              className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
                 selectedRegion === region
-                  ? 'bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/30'
-                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                  ? 'bg-gradient-to-r from-neon-purple/15 to-neon-cyan/15 text-neon-cyan border border-neon-cyan/30 shadow-lg shadow-neon-cyan/10'
+                  : 'bg-white/[0.03] text-gray-500 hover:bg-white/[0.06] hover:text-gray-300 border border-transparent'
               }`}
             >
               {region === 'all' ? 'All Regions' : region}
@@ -441,30 +460,36 @@ export const WeatherPage: React.FC = () => {
 
       {/* Loading State */}
       {loading && (
-        <div className="px-6 py-12 text-center">
-          <Loader2 className="w-12 h-12 text-neon-cyan mx-auto mb-4 animate-spin" />
-          <p className="text-gray-400 mb-2">Loading weather data...</p>
-          <div className="w-64 h-2 bg-white/10 rounded-full mx-auto overflow-hidden">
-            <div 
-              className="h-full bg-neon-cyan transition-all duration-300"
-              style={{ width: `${loadingProgress}%` }}
-            />
+        <div className="relative px-6 py-16 text-center">
+          <div className="absolute inset-0 flex items-center justify-center opacity-20">
+            <div className="w-64 h-64 bg-neon-cyan/20 rounded-full blur-[100px] animate-pulse" />
           </div>
-          <p className="text-xs text-gray-500 mt-2 font-mono">{loadingProgress}% complete</p>
-          <p className="text-xs text-gray-600 mt-4">Fetching from Open-Meteo API...</p>
+          <div className="relative">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 border border-white/10 flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <Loader2 className="w-8 h-8 text-neon-cyan animate-spin" />
+            </div>
+            <p className="text-gray-300 font-medium mb-4">Loading weather data...</p>
+            <div className="w-56 h-1.5 bg-white/5 rounded-full mx-auto overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-neon-cyan to-neon-purple rounded-full transition-all duration-300"
+                style={{ width: `${loadingProgress}%` }}
+              />
+            </div>
+            <p className="text-[10px] text-gray-500 mt-3 font-mono tracking-wide">{loadingProgress}% complete</p>
+          </div>
         </div>
       )}
 
       {/* API Error State */}
       {!loading && apiError && weatherData.length === 0 && (
         <div className="p-6">
-          <div className="glass rounded-xl p-8 text-center max-w-md mx-auto">
-            <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
+          <div className="glass-card rounded-2xl p-10 text-center max-w-md mx-auto border border-red-500/20">
+            <div className="w-16 h-16 rounded-2xl bg-red-500/15 flex items-center justify-center mx-auto mb-6 border border-red-500/20">
               <Cloud className="w-8 h-8 text-red-400" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">Weather Data Not Available</h3>
-            <p className="text-gray-400 mb-4">
-              The Open-Meteo API is currently rate-limited or unavailable. Please try again later.
+            <h3 className="text-lg font-bold text-white mb-2">Weather Data Unavailable</h3>
+            <p className="text-sm text-gray-400 mb-6">
+              The API is currently rate-limited. Please try again later.
             </p>
             <button
               onClick={() => {
@@ -472,7 +497,7 @@ export const WeatherPage: React.FC = () => {
                 localStorage.removeItem('weatherData_cacheTime');
                 fetchAllWeather();
               }}
-              className="px-4 py-2 bg-neon-cyan/20 text-neon-cyan rounded-lg hover:bg-neon-cyan/30 transition-colors"
+              className="px-5 py-2.5 bg-gradient-to-r from-neon-cyan/15 to-neon-purple/15 text-neon-cyan rounded-lg border border-neon-cyan/30 hover:border-neon-cyan/50 transition-all duration-300 text-sm font-medium"
             >
               <RefreshCw className="w-4 h-4 inline mr-2" />
               Try Again
@@ -484,13 +509,15 @@ export const WeatherPage: React.FC = () => {
       {/* Weather Grid */}
       {!loading && weatherData.length > 0 && (
         <div className="p-6 pb-24">
-          <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
-            <span className="text-sm text-gray-500">
-              Showing {filteredWeather.length} of {weatherData.length} cities
+          <div className="mb-5 flex items-center justify-between flex-wrap gap-2">
+            <span className="text-xs text-gray-500 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-neon-cyan animate-pulse" />
+              Showing <span className="text-gray-400 font-medium">{filteredWeather.length}</span> of {weatherData.length} cities
             </span>
             {lastUpdated && (
-              <span className="text-xs text-gray-600 font-mono">
-                Data as of {lastUpdated.toLocaleTimeString()} • Data refreshes every 30 min
+              <span className="text-[10px] text-gray-600 font-mono tracking-wide flex items-center gap-2">
+                <RefreshCw className="w-3 h-3 text-gray-600" />
+                {lastUpdated.toLocaleTimeString()} • Refreshes every 30 min
               </span>
             )}
           </div>
@@ -500,45 +527,47 @@ export const WeatherPage: React.FC = () => {
               <div
                 key={`${weather.city}-${weather.country}`}
                 onClick={() => setSelectedCity(weather)}
-                className="glass rounded-xl p-4 cursor-pointer hover:bg-white/10 transition-all hover:scale-[1.02] border border-transparent hover:border-neon-cyan/30"
+                className="glass-card rounded-2xl p-4 cursor-pointer hover:bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-neon-cyan/5 border border-white/[0.06] hover:border-neon-cyan/20 group"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="font-medium text-white">{weather.city}</h3>
-                    <p className="text-xs text-gray-500">{weather.country}</p>
+                    <h3 className="font-semibold text-white group-hover:text-neon-cyan transition-colors">{weather.city}</h3>
+                    <p className="text-[10px] text-gray-500 tracking-wide">{weather.country}</p>
                   </div>
-                  {getWeatherIcon(weather.weatherCode, weather.isDay)}
+                  <div className="p-2 rounded-xl bg-white/[0.03] group-hover:bg-white/[0.06] transition-colors">
+                    {getWeatherIcon(weather.weatherCode, weather.isDay)}
+                  </div>
                 </div>
                 
                 <div className="flex items-end justify-between">
                   <div>
-                    <div className="text-3xl font-bold font-mono text-neon-cyan">
+                    <div className="text-3xl font-bold font-mono bg-gradient-to-r from-neon-cyan to-blue-400 bg-clip-text text-transparent">
                       {weather.temperature}°
                     </div>
-                    <div className="text-xs text-gray-400 mt-1">
+                    <div className="text-[10px] text-gray-400 mt-1 tracking-wide">
                       {weather.description}
                     </div>
                   </div>
-                  <div className="text-right text-xs text-gray-500">
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="w-3 h-3 text-red-400" />
-                      {weather.tempMax}°
+                  <div className="text-right text-[10px] text-gray-500 space-y-0.5">
+                    <div className="flex items-center gap-1 justify-end">
+                      <TrendingUp className="w-2.5 h-2.5 text-red-400" />
+                      <span className="text-gray-400">{weather.tempMax}°</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <TrendingDown className="w-3 h-3 text-blue-400" />
-                      {weather.tempMin}°
+                    <div className="flex items-center gap-1 justify-end">
+                      <TrendingDown className="w-2.5 h-2.5 text-blue-400" />
+                      <span className="text-gray-400">{weather.tempMin}°</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-xs text-gray-400">
-                  <div className="flex items-center gap-1">
-                    <Wind className="w-3 h-3" />
-                    {weather.windSpeed} km/h
+                <div className="mt-3 pt-3 border-t border-white/[0.05] grid grid-cols-2 gap-2 text-[10px] text-gray-500">
+                  <div className="flex items-center gap-1.5 bg-white/[0.02] rounded-lg px-2 py-1.5">
+                    <Wind className="w-3 h-3 text-gray-400" />
+                    <span>{weather.windSpeed} km/h</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Droplet className="w-3 h-3" />
-                    {weather.humidity}%
+                  <div className="flex items-center gap-1.5 bg-white/[0.02] rounded-lg px-2 py-1.5">
+                    <Droplet className="w-3 h-3 text-blue-400" />
+                    <span>{weather.humidity}%</span>
                   </div>
                 </div>
               </div>
@@ -551,135 +580,143 @@ export const WeatherPage: React.FC = () => {
       {selectedCity && (
         <>
           <div 
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/60 backdrop-blur-md z-50"
             onClick={() => setSelectedCity(null)}
           />
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg glass-darker rounded-2xl z-50 animate-scale-in max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  {getWeatherIcon(selectedCity.weatherCode, selectedCity.isDay)}
-                  <div>
-                    <h2 className="text-2xl font-bold text-white">{selectedCity.city}</h2>
-                    <p className="text-gray-400">{selectedCity.country} • {selectedCity.region}</p>
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg z-50 animate-scale-in max-h-[90vh] overflow-y-auto">
+            <div className="glass-card rounded-2xl border border-white/[0.08] shadow-2xl">
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-2xl bg-gradient-to-br from-neon-cyan/15 to-neon-purple/15 border border-white/10">
+                      {getWeatherIcon(selectedCity.weatherCode, selectedCity.isDay)}
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-white">{selectedCity.city}</h2>
+                      <p className="text-sm text-gray-400">{selectedCity.country} • {selectedCity.region}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setSelectedCity(null)}
+                    className="p-2.5 hover:bg-white/[0.06] rounded-xl transition-all duration-300 border border-transparent hover:border-white/10"
+                  >
+                    <X className="w-5 h-5 text-gray-400" />
+                  </button>
+                </div>
+
+                {/* Temperature */}
+                <div className="text-center mb-6 p-6 rounded-2xl bg-gradient-to-br from-white/[0.02] to-transparent border border-white/[0.04]">
+                  <div className="text-6xl font-bold font-mono bg-gradient-to-r from-neon-cyan via-blue-400 to-neon-purple bg-clip-text text-transparent mb-2">
+                    {selectedCity.temperature}°C
+                  </div>
+                  <div className="text-gray-300 font-medium">{selectedCity.description}</div>
+                  <div className="text-sm text-gray-500 mt-1">
+                    Feels like <span className="text-gray-400">{selectedCity.feelsLike}°C</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-6 mt-4">
+                    <span className="text-red-400/80 flex items-center gap-1.5 text-sm">
+                      <TrendingUp className="w-4 h-4" />
+                      H: {selectedCity.tempMax}°
+                    </span>
+                    <span className="text-blue-400/80 flex items-center gap-1.5 text-sm">
+                      <TrendingDown className="w-4 h-4" />
+                      L: {selectedCity.tempMin}°
+                    </span>
                   </div>
                 </div>
-                <button
-                  onClick={() => setSelectedCity(null)}
-                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5 text-gray-400" />
-                </button>
-              </div>
 
-              {/* Temperature */}
-              <div className="text-center mb-6">
-                <div className="text-6xl font-bold font-mono text-neon-cyan mb-2">
-                  {selectedCity.temperature}°C
+                {/* Details Grid */}
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
+                    <div className="flex items-center gap-2 text-gray-400 mb-2">
+                      <Wind className="w-4 h-4" />
+                      <span className="text-[10px] uppercase tracking-widest font-medium">Wind</span>
+                    </div>
+                    <div className="text-xl font-mono text-white">{selectedCity.windSpeed} <span className="text-xs text-gray-500">km/h</span></div>
+                    {selectedCity.windGusts && selectedCity.windGusts > 0 && (
+                      <div className="text-[10px] text-gray-500 mt-1">Gusts: {selectedCity.windGusts} km/h</div>
+                    )}
+                  </div>
+
+                  <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
+                    <div className="flex items-center gap-2 text-gray-400 mb-2">
+                      <Droplet className="w-4 h-4 text-blue-400" />
+                      <span className="text-[10px] uppercase tracking-widest font-medium">Humidity</span>
+                    </div>
+                    <div className="text-xl font-mono text-white">{selectedCity.humidity}<span className="text-xs text-gray-500">%</span></div>
+                  </div>
+
+                  <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
+                    <div className="flex items-center gap-2 text-gray-400 mb-2">
+                      <Gauge className="w-4 h-4" />
+                      <span className="text-[10px] uppercase tracking-widest font-medium">Pressure</span>
+                    </div>
+                    <div className="text-xl font-mono text-white">{selectedCity.pressure} <span className="text-xs text-gray-500">hPa</span></div>
+                  </div>
+
+                  <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
+                    <div className="flex items-center gap-2 text-gray-400 mb-2">
+                      <Sun className="w-4 h-4 text-yellow-400" />
+                      <span className="text-[10px] uppercase tracking-widest font-medium">UV Index</span>
+                    </div>
+                    <div className="text-xl font-mono text-white">{selectedCity.uvIndex ?? 'N/A'}</div>
+                    <div className={`text-[10px] font-medium mt-0.5 ${
+                      (selectedCity.uvIndex ?? 0) <= 2 ? 'text-green-400' :
+                      (selectedCity.uvIndex ?? 0) <= 5 ? 'text-yellow-400' :
+                      (selectedCity.uvIndex ?? 0) <= 7 ? 'text-orange-400' :
+                      'text-red-400'
+                    }`}>
+                      {(selectedCity.uvIndex ?? 0) <= 2 ? 'Low' :
+                       (selectedCity.uvIndex ?? 0) <= 5 ? 'Moderate' :
+                       (selectedCity.uvIndex ?? 0) <= 7 ? 'High' :
+                       (selectedCity.uvIndex ?? 0) <= 10 ? 'Very High' : 'Extreme'}
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
+                    <div className="flex items-center gap-2 text-gray-400 mb-2">
+                      <Cloud className="w-4 h-4" />
+                      <span className="text-[10px] uppercase tracking-widest font-medium">Cloud Cover</span>
+                    </div>
+                    <div className="text-xl font-mono text-white">{selectedCity.cloudCover}<span className="text-xs text-gray-500">%</span></div>
+                  </div>
+
+                  <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
+                    <div className="flex items-center gap-2 text-gray-400 mb-2">
+                      <CloudRain className="w-4 h-4 text-blue-300" />
+                      <span className="text-[10px] uppercase tracking-widest font-medium">Precipitation</span>
+                    </div>
+                    <div className="text-xl font-mono text-white">{selectedCity.precipitationProbability}<span className="text-xs text-gray-500">%</span></div>
+                    <div className="text-[10px] text-gray-500 mt-0.5">chance</div>
+                  </div>
                 </div>
-                <div className="text-gray-400">{selectedCity.description}</div>
-                <div className="text-sm text-gray-500 mt-1">
-                  Feels like {selectedCity.feelsLike}°C
+
+                {/* Sunrise/Sunset */}
+                <div className="flex items-center justify-around p-5 bg-gradient-to-r from-orange-500/5 via-transparent to-purple-500/5 rounded-xl mb-6 border border-white/[0.04]">
+                  <div className="text-center">
+                    <div className="w-10 h-10 rounded-xl bg-orange-500/15 flex items-center justify-center mx-auto mb-2">
+                      <Sunrise className="w-5 h-5 text-orange-400" />
+                    </div>
+                    <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Sunrise</div>
+                    <div className="font-mono text-white font-medium">{formatTime(selectedCity.sunrise)}</div>
+                  </div>
+                  <div className="h-12 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+                  <div className="text-center">
+                    <div className="w-10 h-10 rounded-xl bg-purple-500/15 flex items-center justify-center mx-auto mb-2">
+                      <Sunset className="w-5 h-5 text-purple-400" />
+                    </div>
+                    <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Sunset</div>
+                    <div className="font-mono text-white font-medium">{formatTime(selectedCity.sunset)}</div>
+                  </div>
                 </div>
-                <div className="flex items-center justify-center gap-4 mt-2">
-                  <span className="text-red-400 flex items-center gap-1">
-                    <TrendingUp className="w-4 h-4" />
-                    H: {selectedCity.tempMax}°
+
+                {/* Location */}
+                <div className="flex items-center gap-2 text-gray-500 text-xs bg-white/[0.02] rounded-lg px-3 py-2 border border-white/[0.04]">
+                  <MapPin className="w-3.5 h-3.5 text-neon-cyan/70" />
+                  <span className="font-mono tracking-wide">
+                    {selectedCity.coordinates[1].toFixed(4)}°, {selectedCity.coordinates[0].toFixed(4)}°
                   </span>
-                  <span className="text-blue-400 flex items-center gap-1">
-                    <TrendingDown className="w-4 h-4" />
-                    L: {selectedCity.tempMin}°
-                  </span>
                 </div>
-              </div>
-
-              {/* Details Grid */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="p-4 bg-white/5 rounded-xl">
-                  <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <Wind className="w-4 h-4" />
-                    <span className="text-xs uppercase tracking-wider">Wind</span>
-                  </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.windSpeed} km/h</div>
-                  {selectedCity.windGusts && selectedCity.windGusts > 0 && (
-                    <div className="text-xs text-gray-500">Gusts: {selectedCity.windGusts} km/h</div>
-                  )}
-                </div>
-
-                <div className="p-4 bg-white/5 rounded-xl">
-                  <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <Droplet className="w-4 h-4" />
-                    <span className="text-xs uppercase tracking-wider">Humidity</span>
-                  </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.humidity}%</div>
-                </div>
-
-                <div className="p-4 bg-white/5 rounded-xl">
-                  <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <Gauge className="w-4 h-4" />
-                    <span className="text-xs uppercase tracking-wider">Pressure</span>
-                  </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.pressure} hPa</div>
-                </div>
-
-                <div className="p-4 bg-white/5 rounded-xl">
-                  <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <Sun className="w-4 h-4" />
-                    <span className="text-xs uppercase tracking-wider">UV Index</span>
-                  </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.uvIndex ?? 'N/A'}</div>
-                  <div className={`text-xs ${
-                    (selectedCity.uvIndex ?? 0) <= 2 ? 'text-green-400' :
-                    (selectedCity.uvIndex ?? 0) <= 5 ? 'text-yellow-400' :
-                    (selectedCity.uvIndex ?? 0) <= 7 ? 'text-orange-400' :
-                    'text-red-400'
-                  }`}>
-                    {(selectedCity.uvIndex ?? 0) <= 2 ? 'Low' :
-                     (selectedCity.uvIndex ?? 0) <= 5 ? 'Moderate' :
-                     (selectedCity.uvIndex ?? 0) <= 7 ? 'High' :
-                     (selectedCity.uvIndex ?? 0) <= 10 ? 'Very High' : 'Extreme'}
-                  </div>
-                </div>
-
-                <div className="p-4 bg-white/5 rounded-xl">
-                  <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <Cloud className="w-4 h-4" />
-                    <span className="text-xs uppercase tracking-wider">Cloud Cover</span>
-                  </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.cloudCover}%</div>
-                </div>
-
-                <div className="p-4 bg-white/5 rounded-xl">
-                  <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <CloudRain className="w-4 h-4" />
-                    <span className="text-xs uppercase tracking-wider">Precipitation</span>
-                  </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.precipitationProbability}%</div>
-                  <div className="text-xs text-gray-500">chance</div>
-                </div>
-              </div>
-
-              {/* Sunrise/Sunset */}
-              <div className="flex items-center justify-around p-4 bg-white/5 rounded-xl mb-6">
-                <div className="text-center">
-                  <Sunrise className="w-6 h-6 text-orange-400 mx-auto mb-1" />
-                  <div className="text-xs text-gray-400">Sunrise</div>
-                  <div className="font-mono text-white">{formatTime(selectedCity.sunrise)}</div>
-                </div>
-                <div className="h-8 w-px bg-white/20" />
-                <div className="text-center">
-                  <Sunset className="w-6 h-6 text-purple-400 mx-auto mb-1" />
-                  <div className="text-xs text-gray-400">Sunset</div>
-                  <div className="font-mono text-white">{formatTime(selectedCity.sunset)}</div>
-                </div>
-              </div>
-
-              {/* Location */}
-              <div className="flex items-center gap-2 text-gray-500 text-sm">
-                <MapPin className="w-4 h-4" />
-                <span className="font-mono">
-                  {selectedCity.coordinates[1].toFixed(4)}°, {selectedCity.coordinates[0].toFixed(4)}°
-                </span>
               </div>
             </div>
           </div>

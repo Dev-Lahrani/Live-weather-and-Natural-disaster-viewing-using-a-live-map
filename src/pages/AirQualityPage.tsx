@@ -224,32 +224,35 @@ export const AirQualityPage: React.FC = () => {
   const bestCity = aqiData.reduce((best, d) => d.aqi < (best?.aqi || 999) ? d : best, aqiData[0]);
 
   return (
-    <div className="min-h-screen bg-cyber-darker text-white overflow-auto">
+    <div className="min-h-screen bg-[#080810] text-white overflow-auto">
       {/* Header */}
-      <header className="glass-darker px-6 py-4 sticky top-0 z-50">
+      <header className="bg-[#0a0a14]/90 backdrop-blur-xl px-6 py-4 sticky top-0 z-50 border-b border-transparent" style={{ borderImage: 'linear-gradient(to right, transparent, rgba(0, 255, 136, 0.3), transparent) 1' }}>
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-4">
             <Link 
               to="/" 
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors text-gray-400 hover:text-white"
+              className="p-2.5 hover:bg-white/[0.06] rounded-xl transition-all duration-300 text-gray-400 hover:text-white border border-transparent hover:border-white/10"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div className="flex items-center gap-3">
-              <Wind className="w-8 h-8 text-neon-green" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-green/20 to-emerald-500/10 flex items-center justify-center border border-neon-green/20 shadow-lg shadow-neon-green/10">
+                <Wind className="w-5 h-5 text-neon-green" />
+              </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Air Quality Index</h1>
-                <p className="text-xs text-gray-400 font-mono">
-                  {aqiData.length} cities monitored
+                <h1 className="text-xl font-bold text-white tracking-tight">Air Quality Index</h1>
+                <p className="text-[10px] text-gray-500 font-mono tracking-wide">
+                  {aqiData.length} cities monitored globally
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {lastUpdated && (
-              <span className="text-xs text-gray-500 font-mono">
-                Updated {lastUpdated.toLocaleTimeString()}
+              <span className="text-[10px] text-gray-500 font-mono tracking-wide flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse" />
+                {lastUpdated.toLocaleTimeString()}
               </span>
             )}
             <button
@@ -259,38 +262,44 @@ export const AirQualityPage: React.FC = () => {
                 fetchAllAQI();
               }}
               disabled={loading}
-              className={`p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-neon-green transition-colors ${loading ? 'opacity-50' : ''}`}
+              className={`p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] text-gray-400 hover:text-neon-green transition-all duration-300 border border-white/[0.06] hover:border-neon-green/20 ${loading ? 'opacity-50' : ''}`}
             >
-              <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
           </div>
         </div>
       </header>
 
       {/* Stats Bar */}
-      <div className="px-6 py-4 glass border-b border-white/10">
+      <div className="px-6 py-4 bg-white/[0.02] border-b border-white/[0.04]">
         <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-8">
             <div>
-              <span className="text-xs text-gray-500 uppercase">Global Avg</span>
-              <div className="text-2xl font-bold font-mono" style={{ color: getAQIColor(getAQILevel(avgAQI)) }}>
+              <span className="text-[10px] text-gray-500 uppercase tracking-widest font-medium">Global Avg</span>
+              <div className="text-2xl font-bold font-mono mt-0.5" style={{ color: getAQIColor(getAQILevel(avgAQI)) }}>
                 {avgAQI}
               </div>
             </div>
             {worstCity && (
               <div>
-                <span className="text-xs text-gray-500 uppercase">Worst</span>
-                <div className="text-sm">
-                  <span className="font-mono text-red-400">{worstCity.aqi}</span>
+                <span className="text-[10px] text-gray-500 uppercase tracking-widest font-medium flex items-center gap-1.5">
+                  <AlertTriangle className="w-3 h-3 text-red-400" />
+                  Worst
+                </span>
+                <div className="text-sm mt-0.5">
+                  <span className="font-mono text-red-400 font-bold">{worstCity.aqi}</span>
                   <span className="text-gray-400 ml-2">{worstCity.city}</span>
                 </div>
               </div>
             )}
             {bestCity && (
               <div>
-                <span className="text-xs text-gray-500 uppercase">Best</span>
-                <div className="text-sm">
-                  <span className="font-mono text-green-400">{bestCity.aqi}</span>
+                <span className="text-[10px] text-gray-500 uppercase tracking-widest font-medium flex items-center gap-1.5">
+                  <Leaf className="w-3 h-3 text-green-400" />
+                  Best
+                </span>
+                <div className="text-sm mt-0.5">
+                  <span className="font-mono text-green-400 font-bold">{bestCity.aqi}</span>
                   <span className="text-gray-400 ml-2">{bestCity.city}</span>
                 </div>
               </div>
@@ -298,30 +307,30 @@ export const AirQualityPage: React.FC = () => {
           </div>
 
           {/* AQI Legend */}
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-gray-500">AQI:</span>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#22c55e' }} />
+          <div className="flex items-center gap-3 text-[10px]">
+            <span className="text-gray-500 uppercase tracking-widest font-medium">AQI</span>
+            <div className="flex items-center gap-1.5 bg-white/[0.02] rounded-lg px-2 py-1">
+              <div className="w-2.5 h-2.5 rounded" style={{ backgroundColor: '#22c55e' }} />
               <span className="text-gray-400">Good</span>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#eab308' }} />
+            <div className="flex items-center gap-1.5 bg-white/[0.02] rounded-lg px-2 py-1">
+              <div className="w-2.5 h-2.5 rounded" style={{ backgroundColor: '#eab308' }} />
               <span className="text-gray-400">Moderate</span>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f97316' }} />
+            <div className="flex items-center gap-1.5 bg-white/[0.02] rounded-lg px-2 py-1">
+              <div className="w-2.5 h-2.5 rounded" style={{ backgroundColor: '#f97316' }} />
               <span className="text-gray-400">Unhealthy*</span>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }} />
+            <div className="flex items-center gap-1.5 bg-white/[0.02] rounded-lg px-2 py-1">
+              <div className="w-2.5 h-2.5 rounded" style={{ backgroundColor: '#ef4444' }} />
               <span className="text-gray-400">Unhealthy</span>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#7c3aed' }} />
+            <div className="flex items-center gap-1.5 bg-white/[0.02] rounded-lg px-2 py-1">
+              <div className="w-2.5 h-2.5 rounded" style={{ backgroundColor: '#7c3aed' }} />
               <span className="text-gray-400">Very Unhealthy</span>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#991b1b' }} />
+            <div className="flex items-center gap-1.5 bg-white/[0.02] rounded-lg px-2 py-1">
+              <div className="w-2.5 h-2.5 rounded" style={{ backgroundColor: '#991b1b' }} />
               <span className="text-gray-400">Hazardous</span>
             </div>
           </div>
@@ -329,35 +338,35 @@ export const AirQualityPage: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="px-6 py-4 border-b border-white/10 flex items-center gap-4 flex-wrap">
+      <div className="px-6 py-4 border-b border-white/[0.04] flex items-center gap-4 flex-wrap">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search cities..."
-            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-neon-green/50"
+            className="w-full pl-10 pr-10 py-2.5 bg-white/[0.03] border border-white/[0.06] rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:border-neon-green/30 focus:bg-white/[0.04] transition-all duration-300"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-1.5 flex-wrap">
           {regions.map((region) => (
             <button
               key={region}
               onClick={() => setSelectedRegion(region)}
-              className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
                 selectedRegion === region
-                  ? 'bg-neon-green/20 text-neon-green border border-neon-green/30'
-                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                  ? 'bg-gradient-to-r from-neon-green/15 to-emerald-500/15 text-neon-green border border-neon-green/30 shadow-lg shadow-neon-green/10'
+                  : 'bg-white/[0.03] text-gray-500 hover:bg-white/[0.06] hover:text-gray-300 border border-transparent'
               }`}
             >
               {region === 'all' ? 'All Regions' : region}
@@ -368,29 +377,36 @@ export const AirQualityPage: React.FC = () => {
 
       {/* Loading State */}
       {loading && (
-        <div className="px-6 py-12 text-center">
-          <Loader2 className="w-12 h-12 text-neon-green mx-auto mb-4 animate-spin" />
-          <p className="text-gray-400 mb-2">Loading air quality data...</p>
-          <div className="w-64 h-2 bg-white/10 rounded-full mx-auto overflow-hidden">
-            <div 
-              className="h-full bg-neon-green transition-all duration-300"
-              style={{ width: `${loadingProgress}%` }}
-            />
+        <div className="relative px-6 py-16 text-center">
+          <div className="absolute inset-0 flex items-center justify-center opacity-20">
+            <div className="w-64 h-64 bg-neon-green/20 rounded-full blur-[100px] animate-pulse" />
           </div>
-          <p className="text-xs text-gray-500 mt-2 font-mono">{loadingProgress}% complete</p>
+          <div className="relative">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neon-green/20 to-emerald-500/20 border border-white/10 flex items-center justify-center mx-auto mb-6 shadow-lg">
+              <Loader2 className="w-8 h-8 text-neon-green animate-spin" />
+            </div>
+            <p className="text-gray-300 font-medium mb-4">Loading air quality data...</p>
+            <div className="w-56 h-1.5 bg-white/5 rounded-full mx-auto overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-neon-green to-emerald-400 rounded-full transition-all duration-300"
+                style={{ width: `${loadingProgress}%` }}
+              />
+            </div>
+            <p className="text-[10px] text-gray-500 mt-3 font-mono tracking-wide">{loadingProgress}% complete</p>
+          </div>
         </div>
       )}
 
       {/* API Error State */}
       {!loading && apiError && aqiData.length === 0 && (
         <div className="p-6">
-          <div className="glass rounded-xl p-8 text-center max-w-md mx-auto">
-            <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
+          <div className="glass-card rounded-2xl p-10 text-center max-w-md mx-auto border border-red-500/20">
+            <div className="w-16 h-16 rounded-2xl bg-red-500/15 flex items-center justify-center mx-auto mb-6 border border-red-500/20">
               <AlertTriangle className="w-8 h-8 text-red-400" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">Air Quality Data Not Available</h3>
-            <p className="text-gray-400 mb-4">
-              The Air Quality API is currently unavailable. Please try again later.
+            <h3 className="text-lg font-bold text-white mb-2">Air Quality Data Unavailable</h3>
+            <p className="text-sm text-gray-400 mb-6">
+              The API is currently unavailable. Please try again later.
             </p>
             <button
               onClick={() => {
@@ -398,7 +414,7 @@ export const AirQualityPage: React.FC = () => {
                 localStorage.removeItem('aqiData_cacheTime');
                 fetchAllAQI();
               }}
-              className="px-4 py-2 bg-neon-green/20 text-neon-green rounded-lg hover:bg-neon-green/30 transition-colors"
+              className="px-5 py-2.5 bg-gradient-to-r from-neon-green/15 to-emerald-500/15 text-neon-green rounded-lg border border-neon-green/30 hover:border-neon-green/50 transition-all duration-300 text-sm font-medium"
             >
               <RefreshCw className="w-4 h-4 inline mr-2" />
               Try Again
@@ -410,8 +426,9 @@ export const AirQualityPage: React.FC = () => {
       {/* AQI Grid */}
       {!loading && aqiData.length > 0 && (
         <div className="p-6 pb-24">
-          <div className="mb-4 text-sm text-gray-500">
-            Showing {filteredData.length} of {aqiData.length} cities (sorted by worst AQI)
+          <div className="mb-5 text-xs text-gray-500 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse" />
+            Showing <span className="text-gray-400 font-medium">{filteredData.length}</span> of {aqiData.length} cities (sorted by worst AQI)
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -419,15 +436,15 @@ export const AirQualityPage: React.FC = () => {
               <div
                 key={`${data.city}-${data.country}`}
                 onClick={() => setSelectedCity(data)}
-                className="glass rounded-xl p-4 cursor-pointer hover:bg-white/10 transition-all hover:scale-[1.02] border border-transparent"
+                className="glass-card rounded-2xl p-4 cursor-pointer hover:bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group border border-white/[0.06]"
                 style={{ 
-                  borderColor: `${getAQIColor(data.aqiLevel)}30`,
+                  boxShadow: `0 10px 40px ${getAQIColor(data.aqiLevel)}10`,
                 }}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="font-medium text-white">{data.city}</h3>
-                    <p className="text-xs text-gray-500">{data.country}</p>
+                    <h3 className="font-semibold text-white group-hover:text-neon-green transition-colors">{data.city}</h3>
+                    <p className="text-[10px] text-gray-500 tracking-wide">{data.country}</p>
                   </div>
                   <div 
                     className="text-3xl font-bold font-mono"
@@ -438,22 +455,23 @@ export const AirQualityPage: React.FC = () => {
                 </div>
                 
                 <div 
-                  className="text-xs px-2 py-1 rounded-full inline-block"
+                  className="text-[10px] px-2.5 py-1 rounded-lg inline-block font-medium tracking-wide"
                   style={{ 
-                    backgroundColor: `${getAQIColor(data.aqiLevel)}20`,
-                    color: getAQIColor(data.aqiLevel)
+                    backgroundColor: `${getAQIColor(data.aqiLevel)}15`,
+                    color: getAQIColor(data.aqiLevel),
+                    border: `1px solid ${getAQIColor(data.aqiLevel)}30`
                   }}
                 >
                   {getAQILabel(data.aqiLevel)}
                 </div>
 
-                <div className="mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-xs text-gray-400">
-                  <div className="flex items-center gap-1">
-                    <Droplets className="w-3 h-3" />
+                <div className="mt-3 pt-3 border-t border-white/[0.05] grid grid-cols-2 gap-2 text-[10px] text-gray-500">
+                  <div className="flex items-center gap-1.5 bg-white/[0.02] rounded-lg px-2 py-1.5">
+                    <Droplets className="w-3 h-3 text-blue-400" />
                     <span>PM2.5: {data.pm25}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Factory className="w-3 h-3" />
+                  <div className="flex items-center gap-1.5 bg-white/[0.02] rounded-lg px-2 py-1.5">
+                    <Factory className="w-3 h-3 text-gray-400" />
                     <span>PM10: {data.pm10}</span>
                   </div>
                 </div>
@@ -465,19 +483,21 @@ export const AirQualityPage: React.FC = () => {
 
       {/* Detail Modal */}
       {selectedCity && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="glass-darker rounded-xl w-full max-w-lg overflow-hidden">
-            <div className="p-4 border-b border-white/10 flex items-center justify-between">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <div className="glass-card rounded-2xl w-full max-w-lg overflow-hidden border border-white/[0.08] shadow-2xl animate-scale-in">
+            <div className="p-5 border-b border-white/[0.06] flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-neon-green" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-green/20 to-emerald-500/10 flex items-center justify-center border border-neon-green/20">
+                  <MapPin className="w-5 h-5 text-neon-green" />
+                </div>
                 <div>
                   <h3 className="font-bold text-white">{selectedCity.city}</h3>
-                  <p className="text-xs text-gray-400">{selectedCity.country}</p>
+                  <p className="text-[10px] text-gray-500 tracking-wide">{selectedCity.country}</p>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedCity(null)}
-                className="p-2 hover:bg-white/10 rounded-lg text-gray-400"
+                className="p-2.5 hover:bg-white/[0.06] rounded-xl text-gray-400 transition-all duration-300 border border-transparent hover:border-white/10"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -485,18 +505,19 @@ export const AirQualityPage: React.FC = () => {
 
             <div className="p-6">
               {/* Main AQI */}
-              <div className="text-center mb-6">
+              <div className="text-center mb-6 p-6 rounded-2xl bg-gradient-to-br from-white/[0.02] to-transparent border border-white/[0.04]">
                 <div 
-                  className="text-6xl font-bold font-mono mb-2"
+                  className="text-6xl font-bold font-mono mb-3"
                   style={{ color: getAQIColor(selectedCity.aqiLevel) }}
                 >
                   {selectedCity.aqi}
                 </div>
                 <div 
-                  className="inline-block px-4 py-1 rounded-full text-sm"
+                  className="inline-block px-4 py-1.5 rounded-lg text-sm font-medium"
                   style={{ 
-                    backgroundColor: `${getAQIColor(selectedCity.aqiLevel)}20`,
-                    color: getAQIColor(selectedCity.aqiLevel)
+                    backgroundColor: `${getAQIColor(selectedCity.aqiLevel)}15`,
+                    color: getAQIColor(selectedCity.aqiLevel),
+                    border: `1px solid ${getAQIColor(selectedCity.aqiLevel)}30`
                   }}
                 >
                   {getAQILabel(selectedCity.aqiLevel)}
@@ -504,48 +525,48 @@ export const AirQualityPage: React.FC = () => {
               </div>
 
               {/* Pollutant Details */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-white/5 rounded-xl">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
                   <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <Droplets className="w-4 h-4" />
-                    <span className="text-xs uppercase">PM2.5</span>
+                    <Droplets className="w-4 h-4 text-blue-400" />
+                    <span className="text-[10px] uppercase tracking-widest font-medium">PM2.5</span>
                   </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.pm25} µg/m³</div>
+                  <div className="text-xl font-mono text-white">{selectedCity.pm25} <span className="text-xs text-gray-500">µg/m³</span></div>
                 </div>
-                <div className="p-4 bg-white/5 rounded-xl">
+                <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
                   <div className="flex items-center gap-2 text-gray-400 mb-2">
                     <Factory className="w-4 h-4" />
-                    <span className="text-xs uppercase">PM10</span>
+                    <span className="text-[10px] uppercase tracking-widest font-medium">PM10</span>
                   </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.pm10} µg/m³</div>
+                  <div className="text-xl font-mono text-white">{selectedCity.pm10} <span className="text-xs text-gray-500">µg/m³</span></div>
                 </div>
-                <div className="p-4 bg-white/5 rounded-xl">
+                <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
                   <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <Leaf className="w-4 h-4" />
-                    <span className="text-xs uppercase">Ozone</span>
+                    <Leaf className="w-4 h-4 text-green-400" />
+                    <span className="text-[10px] uppercase tracking-widest font-medium">Ozone</span>
                   </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.ozone} µg/m³</div>
+                  <div className="text-xl font-mono text-white">{selectedCity.ozone} <span className="text-xs text-gray-500">µg/m³</span></div>
                 </div>
-                <div className="p-4 bg-white/5 rounded-xl">
+                <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
                   <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <Wind className="w-4 h-4" />
-                    <span className="text-xs uppercase">NO₂</span>
+                    <Wind className="w-4 h-4 text-cyan-400" />
+                    <span className="text-[10px] uppercase tracking-widest font-medium">NO₂</span>
                   </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.no2} µg/m³</div>
+                  <div className="text-xl font-mono text-white">{selectedCity.no2} <span className="text-xs text-gray-500">µg/m³</span></div>
                 </div>
-                <div className="p-4 bg-white/5 rounded-xl">
+                <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
                   <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <Factory className="w-4 h-4" />
-                    <span className="text-xs uppercase">SO₂</span>
+                    <Factory className="w-4 h-4 text-yellow-400" />
+                    <span className="text-[10px] uppercase tracking-widest font-medium">SO₂</span>
                   </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.so2} µg/m³</div>
+                  <div className="text-xl font-mono text-white">{selectedCity.so2} <span className="text-xs text-gray-500">µg/m³</span></div>
                 </div>
-                <div className="p-4 bg-white/5 rounded-xl">
+                <div className="p-4 bg-white/[0.03] rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-colors">
                   <div className="flex items-center gap-2 text-gray-400 mb-2">
-                    <Info className="w-4 h-4" />
-                    <span className="text-xs uppercase">CO</span>
+                    <Info className="w-4 h-4 text-orange-400" />
+                    <span className="text-[10px] uppercase tracking-widest font-medium">CO</span>
                   </div>
-                  <div className="text-xl font-mono text-white">{selectedCity.co} µg/m³</div>
+                  <div className="text-xl font-mono text-white">{selectedCity.co} <span className="text-xs text-gray-500">µg/m³</span></div>
                 </div>
               </div>
             </div>

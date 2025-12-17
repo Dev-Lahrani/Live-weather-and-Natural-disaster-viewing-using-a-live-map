@@ -136,51 +136,53 @@ export const DisasterTrends: React.FC<DisasterTrendsProps> = ({
   const totalAffected = disasters.reduce((sum, d) => sum + (d.estimatedAffected || 0), 0);
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-      <div className="glass-darker rounded-xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
+      <div className="glass-card rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col border border-white/[0.08] shadow-2xl animate-scale-in">
         {/* Header */}
-        <div className="p-4 border-b border-white/10 flex items-center justify-between">
+        <div className="p-5 border-b border-white/[0.06] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <BarChart3 className="w-5 h-5 text-neon-purple" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-neon-purple/20 to-pink-500/10 flex items-center justify-center border border-neon-purple/20">
+              <BarChart3 className="w-4 h-4 text-neon-purple" />
+            </div>
             <h2 className="text-lg font-bold text-white">Disaster Trends & Analytics</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white"
+            className="p-2.5 hover:bg-white/[0.06] rounded-xl text-gray-400 hover:text-white transition-all duration-300 border border-transparent hover:border-white/10"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-5">
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="glass rounded-xl p-4">
-              <div className="flex items-center gap-2 text-gray-400 mb-2">
-                <Activity className="w-4 h-4" />
-                <span className="text-xs uppercase">Total Events</span>
+            <div className="glass-card rounded-2xl p-4 border border-white/[0.06]">
+              <div className="flex items-center gap-2 text-gray-500 mb-2">
+                <Activity className="w-3.5 h-3.5" />
+                <span className="text-[10px] uppercase tracking-widest font-medium">Total Events</span>
               </div>
-              <div className="text-3xl font-bold font-mono text-neon-cyan">{totalEvents}</div>
+              <div className="text-3xl font-bold font-mono bg-gradient-to-r from-neon-cyan to-blue-400 bg-clip-text text-transparent">{totalEvents}</div>
             </div>
-            <div className="glass rounded-xl p-4">
-              <div className="flex items-center gap-2 text-gray-400 mb-2">
-                <AlertTriangle className="w-4 h-4" />
-                <span className="text-xs uppercase">Severe+</span>
+            <div className="glass-card rounded-2xl p-4 border border-white/[0.06]">
+              <div className="flex items-center gap-2 text-gray-500 mb-2">
+                <AlertTriangle className="w-3.5 h-3.5 text-orange-400" />
+                <span className="text-[10px] uppercase tracking-widest font-medium">Severe+</span>
               </div>
               <div className="text-3xl font-bold font-mono text-orange-400">{severeEvents}</div>
             </div>
-            <div className="glass rounded-xl p-4">
-              <div className="flex items-center gap-2 text-gray-400 mb-2">
-                <TrendingUp className="w-4 h-4" />
-                <span className="text-xs uppercase">Avg Magnitude</span>
+            <div className="glass-card rounded-2xl p-4 border border-white/[0.06]">
+              <div className="flex items-center gap-2 text-gray-500 mb-2">
+                <TrendingUp className="w-3.5 h-3.5 text-neon-purple" />
+                <span className="text-[10px] uppercase tracking-widest font-medium">Avg Magnitude</span>
               </div>
               <div className="text-3xl font-bold font-mono text-neon-purple">{avgMagnitude.toFixed(1)}</div>
             </div>
-            <div className="glass rounded-xl p-4">
-              <div className="flex items-center gap-2 text-gray-400 mb-2">
-                <Calendar className="w-4 h-4" />
-                <span className="text-xs uppercase">Est. Affected</span>
+            <div className="glass-card rounded-2xl p-4 border border-white/[0.06]">
+              <div className="flex items-center gap-2 text-gray-500 mb-2">
+                <Calendar className="w-3.5 h-3.5 text-neon-red" />
+                <span className="text-[10px] uppercase tracking-widest font-medium">Est. Affected</span>
               </div>
               <div className="text-3xl font-bold font-mono text-neon-red">
                 {totalAffected >= 1000000 
@@ -193,11 +195,13 @@ export const DisasterTrends: React.FC<DisasterTrendsProps> = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {/* Category Distribution */}
-            <div className="glass rounded-xl p-4">
+            <div className="glass-card rounded-2xl p-5 border border-white/[0.06]">
               <h3 className="text-sm font-medium text-white mb-4 flex items-center gap-2">
-                <PieChartIcon className="w-4 h-4 text-neon-cyan" />
+                <div className="w-6 h-6 rounded-lg bg-neon-cyan/15 flex items-center justify-center">
+                  <PieChartIcon className="w-3.5 h-3.5 text-neon-cyan" />
+                </div>
                 Events by Category
               </h3>
               {categoryData.length > 0 ? (
@@ -220,9 +224,10 @@ export const DisasterTrends: React.FC<DisasterTrendsProps> = ({
                     </Pie>
                     <Tooltip 
                       contentStyle={{ 
-                        backgroundColor: 'rgba(10,10,20,0.9)', 
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        borderRadius: '8px'
+                        backgroundColor: 'rgba(10,10,16,0.95)', 
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        borderRadius: '12px',
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
                       }}
                     />
                   </PieChart>
@@ -235,25 +240,28 @@ export const DisasterTrends: React.FC<DisasterTrendsProps> = ({
             </div>
 
             {/* Severity Distribution */}
-            <div className="glass rounded-xl p-4">
+            <div className="glass-card rounded-2xl p-5 border border-white/[0.06]">
               <h3 className="text-sm font-medium text-white mb-4 flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-orange-400" />
+                <div className="w-6 h-6 rounded-lg bg-orange-500/15 flex items-center justify-center">
+                  <AlertTriangle className="w-3.5 h-3.5 text-orange-400" />
+                </div>
                 Events by Severity
               </h3>
               {severityData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={250}>
                   <BarChart data={severityData} layout="vertical">
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                    <XAxis type="number" stroke="#666" fontSize={12} />
-                    <YAxis type="category" dataKey="name" stroke="#666" fontSize={12} width={80} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                    <XAxis type="number" stroke="#555" fontSize={11} />
+                    <YAxis type="category" dataKey="name" stroke="#555" fontSize={11} width={80} />
                     <Tooltip 
                       contentStyle={{ 
-                        backgroundColor: 'rgba(10,10,20,0.9)', 
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        borderRadius: '8px'
+                        backgroundColor: 'rgba(10,10,16,0.95)', 
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        borderRadius: '12px',
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
                       }}
                     />
-                    <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                    <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                       {severityData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
@@ -268,52 +276,58 @@ export const DisasterTrends: React.FC<DisasterTrendsProps> = ({
             </div>
 
             {/* 24-Hour Timeline */}
-            <div className="glass rounded-xl p-4 lg:col-span-2">
+            <div className="glass-card rounded-2xl p-5 lg:col-span-2 border border-white/[0.06]">
               <h3 className="text-sm font-medium text-white mb-4 flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-neon-green" />
+                <div className="w-6 h-6 rounded-lg bg-neon-green/15 flex items-center justify-center">
+                  <TrendingUp className="w-3.5 h-3.5 text-neon-green" />
+                </div>
                 Events Over Last 24 Hours
               </h3>
               <ResponsiveContainer width="100%" height={200}>
                 <AreaChart data={timelineData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis dataKey="hour" stroke="#666" fontSize={10} />
-                  <YAxis stroke="#666" fontSize={12} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                  <XAxis dataKey="hour" stroke="#555" fontSize={10} />
+                  <YAxis stroke="#555" fontSize={11} />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: 'rgba(10,10,20,0.9)', 
-                      border: '1px solid rgba(255,255,255,0.1)',
-                      borderRadius: '8px'
+                      backgroundColor: 'rgba(10,10,16,0.95)', 
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      borderRadius: '12px',
+                      boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
                     }}
                   />
                   <Legend />
-                  <Area type="monotone" dataKey="earthquakes" stackId="1" stroke="#ff0055" fill="#ff005550" name="Earthquakes" />
-                  <Area type="monotone" dataKey="storms" stackId="1" stroke="#bf00ff" fill="#bf00ff50" name="Storms" />
-                  <Area type="monotone" dataKey="wildfires" stackId="1" stroke="#ff6600" fill="#ff660050" name="Wildfires" />
-                  <Area type="monotone" dataKey="floods" stackId="1" stroke="#00a8ff" fill="#00a8ff50" name="Floods" />
+                  <Area type="monotone" dataKey="earthquakes" stackId="1" stroke="#ff0055" fill="#ff005540" name="Earthquakes" />
+                  <Area type="monotone" dataKey="storms" stackId="1" stroke="#bf00ff" fill="#bf00ff40" name="Storms" />
+                  <Area type="monotone" dataKey="wildfires" stackId="1" stroke="#ff6600" fill="#ff660040" name="Wildfires" />
+                  <Area type="monotone" dataKey="floods" stackId="1" stroke="#00a8ff" fill="#00a8ff40" name="Floods" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
 
             {/* Earthquake Magnitude Distribution */}
-            <div className="glass rounded-xl p-4 lg:col-span-2">
+            <div className="glass-card rounded-2xl p-5 lg:col-span-2 border border-white/[0.06]">
               <h3 className="text-sm font-medium text-white mb-4 flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-neon-red" />
+                <div className="w-6 h-6 rounded-lg bg-neon-red/15 flex items-center justify-center">
+                  <BarChart3 className="w-3.5 h-3.5 text-neon-red" />
+                </div>
                 Earthquake Magnitude Distribution
               </h3>
               <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={magnitudeData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis dataKey="range" stroke="#666" fontSize={12} />
-                  <YAxis stroke="#666" fontSize={12} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                  <XAxis dataKey="range" stroke="#555" fontSize={11} />
+                  <YAxis stroke="#555" fontSize={11} />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: 'rgba(10,10,20,0.9)', 
-                      border: '1px solid rgba(255,255,255,0.1)',
-                      borderRadius: '8px'
+                      backgroundColor: 'rgba(10,10,16,0.95)', 
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      borderRadius: '12px',
+                      boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
                     }}
                     formatter={(value) => [`${value} earthquakes`, 'Count']}
                   />
-                  <Bar dataKey="count" fill="#ff0055" radius={[4, 4, 0, 0]} name="Earthquakes">
+                  <Bar dataKey="count" fill="#ff0055" radius={[6, 6, 0, 0]} name="Earthquakes">
                     {magnitudeData.map((_, index) => (
                       <Cell 
                         key={`cell-${index}`} 

@@ -112,21 +112,25 @@ export const Watchlist: React.FC<WatchlistProps> = ({
 
   if (watchlist.length === 0 && !showAddModal) {
     return (
-      <div className="glass rounded-xl p-4">
+      <div className="glass-card rounded-2xl p-4 border border-white/[0.06]">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Star className="w-4 h-4 text-yellow-400" />
+            <div className="w-6 h-6 rounded-lg bg-yellow-500/15 flex items-center justify-center">
+              <Star className="w-3.5 h-3.5 text-yellow-400" />
+            </div>
             <span className="text-sm font-medium text-white">Watchlist</span>
           </div>
         </div>
         <div className="text-center py-6">
-          <Star className="w-8 h-8 text-gray-600 mx-auto mb-2" />
-          <p className="text-xs text-gray-500 mb-3">No locations saved</p>
+          <div className="w-12 h-12 rounded-xl bg-white/[0.03] flex items-center justify-center mx-auto mb-3 border border-white/[0.04]">
+            <Star className="w-6 h-6 text-gray-600" />
+          </div>
+          <p className="text-xs text-gray-500 mb-4">No locations saved</p>
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-3 py-1.5 bg-neon-cyan/20 text-neon-cyan rounded-lg text-xs hover:bg-neon-cyan/30 transition-colors"
+            className="px-4 py-2 bg-gradient-to-r from-neon-cyan/15 to-blue-500/15 text-neon-cyan rounded-xl text-xs font-medium hover:border-neon-cyan/30 transition-all duration-300 border border-neon-cyan/20"
           >
-            <Plus className="w-3 h-3 inline mr-1" />
+            <Plus className="w-3 h-3 inline mr-1.5" />
             Add Location
           </button>
         </div>
@@ -135,16 +139,18 @@ export const Watchlist: React.FC<WatchlistProps> = ({
   }
 
   return (
-    <div className="glass rounded-xl overflow-hidden">
+    <div className="glass-card rounded-2xl overflow-hidden border border-white/[0.06]">
       {/* Header */}
       <div 
-        className="p-4 flex items-center justify-between cursor-pointer hover:bg-white/5"
+        className="p-4 flex items-center justify-between cursor-pointer hover:bg-white/[0.03] transition-all duration-300"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-2">
-          <Star className="w-4 h-4 text-yellow-400" />
+          <div className="w-6 h-6 rounded-lg bg-yellow-500/15 flex items-center justify-center">
+            <Star className="w-3.5 h-3.5 text-yellow-400" />
+          </div>
           <span className="text-sm font-medium text-white">Watchlist</span>
-          <span className="text-xs text-gray-500">({watchlist.length})</span>
+          <span className="text-[10px] text-gray-500 bg-white/[0.04] px-1.5 py-0.5 rounded-md font-mono">{watchlist.length}</span>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -152,21 +158,21 @@ export const Watchlist: React.FC<WatchlistProps> = ({
               e.stopPropagation();
               setShowAddModal(true);
             }}
-            className="p-1 hover:bg-white/10 rounded text-gray-400 hover:text-neon-cyan"
+            className="p-1.5 hover:bg-white/[0.06] rounded-lg text-gray-400 hover:text-neon-cyan transition-all duration-300 border border-transparent hover:border-white/10"
           >
             <Plus className="w-4 h-4" />
           </button>
           {isExpanded ? (
-            <ChevronUp className="w-4 h-4 text-gray-400" />
+            <ChevronUp className="w-4 h-4 text-gray-500" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-gray-400" />
+            <ChevronDown className="w-4 h-4 text-gray-500" />
           )}
         </div>
       </div>
 
       {/* Watchlist Items */}
       {isExpanded && (
-        <div className="border-t border-white/10 max-h-64 overflow-y-auto">
+        <div className="border-t border-white/[0.04] max-h-64 overflow-y-auto">
           {watchlist.map((item) => {
             const cityWeather = item.type === 'city' ? getWeatherForCity(item.name) : null;
             const nearbyCount = getNearbyDisasters(item.coordinates);
@@ -174,7 +180,7 @@ export const Watchlist: React.FC<WatchlistProps> = ({
             return (
               <div
                 key={item.id}
-                className="p-3 border-b border-white/5 hover:bg-white/5 transition-colors"
+                className="p-3 border-b border-white/[0.03] hover:bg-white/[0.03] transition-all duration-300"
               >
                 <div className="flex items-start justify-between">
                   <div 
@@ -185,20 +191,20 @@ export const Watchlist: React.FC<WatchlistProps> = ({
                       <MapPin className="w-3 h-3 text-neon-cyan" />
                       <span className="text-sm font-medium text-white">{item.name}</span>
                       {item.country && (
-                        <span className="text-xs text-gray-500">{item.country}</span>
+                        <span className="text-[10px] text-gray-500">{item.country}</span>
                       )}
                     </div>
                     
-                    <div className="flex items-center gap-3 mt-1">
+                    <div className="flex items-center gap-3 mt-1.5">
                       {cityWeather && (
-                        <div className="flex items-center gap-1 text-xs text-gray-400">
-                          <Thermometer className="w-3 h-3" />
+                        <div className="flex items-center gap-1 text-[10px] text-gray-400 bg-white/[0.02] px-2 py-0.5 rounded-lg">
+                          <Thermometer className="w-2.5 h-2.5" />
                           <span>{cityWeather.temperature}°C</span>
                         </div>
                       )}
                       {nearbyCount > 0 && (
-                        <div className="flex items-center gap-1 text-xs text-orange-400">
-                          <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
+                        <div className="flex items-center gap-1 text-[10px] text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded-lg">
+                          <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
                           <span>{nearbyCount} alert{nearbyCount > 1 ? 's' : ''} nearby</span>
                         </div>
                       )}
@@ -208,10 +214,10 @@ export const Watchlist: React.FC<WatchlistProps> = ({
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => toggleNotifications(item.id)}
-                      className={`p-1 rounded transition-colors ${
+                      className={`p-1.5 rounded-lg transition-all duration-300 ${
                         item.notifyOnDisaster 
-                          ? 'text-neon-cyan hover:bg-neon-cyan/20' 
-                          : 'text-gray-500 hover:bg-white/10'
+                          ? 'text-neon-cyan hover:bg-neon-cyan/15 border border-neon-cyan/20' 
+                          : 'text-gray-500 hover:bg-white/[0.06] border border-transparent'
                       }`}
                       title={item.notifyOnDisaster ? 'Notifications on' : 'Notifications off'}
                     >
@@ -223,7 +229,7 @@ export const Watchlist: React.FC<WatchlistProps> = ({
                     </button>
                     <button
                       onClick={() => removeFromWatchlist(item.id)}
-                      className="p-1 rounded text-gray-500 hover:text-red-400 hover:bg-red-400/20 transition-colors"
+                      className="p-1.5 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-500/15 transition-all duration-300 border border-transparent hover:border-red-500/20"
                     >
                       <Trash2 className="w-3 h-3" />
                     </button>
@@ -237,16 +243,16 @@ export const Watchlist: React.FC<WatchlistProps> = ({
 
       {/* Add Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="glass-darker rounded-xl w-full max-w-md max-h-[80vh] overflow-hidden">
-            <div className="p-4 border-b border-white/10 flex items-center justify-between">
-              <h3 className="font-medium text-white">Add to Watchlist</h3>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <div className="glass-card rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden border border-white/[0.08] shadow-2xl animate-scale-in">
+            <div className="p-5 border-b border-white/[0.06] flex items-center justify-between">
+              <h3 className="font-semibold text-white">Add to Watchlist</h3>
               <button
                 onClick={() => {
                   setShowAddModal(false);
                   setSearchQuery('');
                 }}
-                className="p-1 hover:bg-white/10 rounded text-gray-400"
+                className="p-2 hover:bg-white/[0.06] rounded-xl text-gray-400 transition-all duration-300 border border-transparent hover:border-white/10"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -258,7 +264,7 @@ export const Watchlist: React.FC<WatchlistProps> = ({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search cities..."
-                className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan/50"
+                className="w-full px-4 py-2.5 bg-white/[0.03] border border-white/[0.06] rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:border-neon-cyan/30 transition-all duration-300"
                 autoFocus
               />
             </div>
@@ -273,21 +279,21 @@ export const Watchlist: React.FC<WatchlistProps> = ({
                     country: city.country,
                     coordinates: city.coordinates,
                   })}
-                  className="w-full p-3 flex items-center justify-between hover:bg-white/5 transition-colors text-left"
+                  className="w-full p-3.5 flex items-center justify-between hover:bg-white/[0.04] transition-all duration-300 text-left border-b border-white/[0.02]"
                 >
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-gray-400" />
-                    <span className="text-white">{city.city}</span>
-                    <span className="text-xs text-gray-500">{city.country}</span>
+                    <MapPin className="w-4 h-4 text-gray-500" />
+                    <span className="text-white font-medium">{city.city}</span>
+                    <span className="text-[10px] text-gray-500">{city.country}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                  <div className="flex items-center gap-2 text-[10px] text-gray-400 bg-white/[0.03] px-2 py-1 rounded-lg">
                     <Thermometer className="w-3 h-3" />
                     <span>{city.temperature}°C</span>
                   </div>
                 </button>
               ))}
               {availableCities.length === 0 && (
-                <div className="p-4 text-center text-gray-500 text-sm">
+                <div className="p-6 text-center text-gray-500 text-sm">
                   {searchQuery ? 'No cities found' : 'All cities already in watchlist'}
                 </div>
               )}

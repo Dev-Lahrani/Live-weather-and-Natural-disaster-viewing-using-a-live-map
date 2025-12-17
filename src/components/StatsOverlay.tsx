@@ -68,57 +68,69 @@ export const StatsOverlay: React.FC<StatsOverlayProps> = ({
   }, {} as Record<string, number>);
 
   return (
-    <div className="absolute top-20 left-4 z-20 space-y-3 w-64">
+    <div className="absolute top-20 left-4 z-20 space-y-3 w-72">
       {/* Disaster Stats */}
-      <div className="glass-darker rounded-xl p-4 animate-slide-in">
-        <h3 className="text-xs text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-          <Activity className="w-4 h-4" />
+      <div className="glass-darker rounded-2xl p-5 animate-slide-in border border-white/5 shadow-xl">
+        <h3 className="text-[10px] text-gray-500 uppercase tracking-[0.15em] font-semibold mb-4 flex items-center gap-2">
+          <Activity className="w-3.5 h-3.5 text-neon-cyan" />
           Disaster Statistics
         </h3>
         
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-400">Total Events</span>
-            <span className="text-lg font-mono text-white">{disasters.length}</span>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between group">
+            <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Total Events</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-bold font-mono text-white">{disasters.length}</span>
+              <div className="w-1.5 h-1.5 rounded-full bg-neon-cyan animate-pulse" />
+            </div>
           </div>
           
+          <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-400 flex items-center gap-1">
-              <AlertTriangle className="w-3 h-3 text-orange-400" />
+            <span className="text-sm text-gray-400 flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-orange-500/15 flex items-center justify-center">
+                <AlertTriangle className="w-3.5 h-3.5 text-orange-400" />
+              </div>
               Severe+
             </span>
-            <span className="text-lg font-mono text-orange-400">{severeCount}</span>
+            <span className="text-xl font-bold font-mono text-orange-400">{severeCount}</span>
           </div>
 
           {earthquakes.length > 0 && (
             <>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400 flex items-center gap-1">
-                  <Mountain className="w-3 h-3 text-neon-red" />
+                <span className="text-sm text-gray-400 flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-lg bg-red-500/15 flex items-center justify-center">
+                    <Mountain className="w-3.5 h-3.5 text-red-400" />
+                  </div>
                   Avg Magnitude
                 </span>
-                <span className="text-lg font-mono text-neon-red">M{avgMagnitude.toFixed(1)}</span>
+                <span className="text-xl font-bold font-mono text-red-400">M{avgMagnitude.toFixed(1)}</span>
               </div>
               
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">Max Magnitude</span>
-                <span className="text-lg font-mono text-neon-red">M{maxMagnitude.toFixed(1)}</span>
+                <span className="text-sm text-gray-400 pl-8">Max Magnitude</span>
+                <span className="text-lg font-bold font-mono text-red-400/80">M{maxMagnitude.toFixed(1)}</span>
               </div>
             </>
           )}
 
           {totalAffected > 0 && (
-            <div className="flex items-center justify-between pt-2 border-t border-white/10">
-              <span className="text-sm text-gray-400">Est. Affected</span>
-              <span className="text-lg font-mono text-neon-purple">
-                {totalAffected >= 1000000 
-                  ? `${(totalAffected / 1000000).toFixed(1)}M` 
-                  : totalAffected >= 1000 
-                    ? `${(totalAffected / 1000).toFixed(0)}K`
-                    : totalAffected
-                }
-              </span>
-            </div>
+            <>
+              <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-400">Est. Affected</span>
+                <span className="text-xl font-bold font-mono bg-gradient-to-r from-neon-purple to-neon-cyan bg-clip-text text-transparent">
+                  {totalAffected >= 1000000 
+                    ? `${(totalAffected / 1000000).toFixed(1)}M` 
+                    : totalAffected >= 1000 
+                      ? `${(totalAffected / 1000).toFixed(0)}K`
+                      : totalAffected
+                  }
+                </span>
+              </div>
+            </>
           )}
         </div>
 

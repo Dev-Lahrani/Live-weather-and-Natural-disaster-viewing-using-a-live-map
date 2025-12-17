@@ -84,128 +84,132 @@ export const ExportModal: React.FC<ExportModalProps> = ({
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+        className="fixed inset-0 bg-black/60 backdrop-blur-md z-50"
         onClick={onClose}
       />
       
       {/* Modal */}
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md glass-darker rounded-2xl z-50 animate-scale-in">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-white/10">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <Download className="w-5 h-5 text-neon-cyan" />
-            Export & Share
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-          >
-            <X className="w-5 h-5 text-gray-400" />
-          </button>
-        </div>
-
-        {/* Content */}
-        <div className="p-4 space-y-6">
-          {/* Export Options */}
-          <div>
-            <label className="text-sm font-medium text-gray-400 mb-3 block">Export All Data</label>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={() => exportToJSON({ disasters, weather, exportedAt: new Date().toISOString() }, 'geoalert-data.json')}
-                className="flex items-center justify-center gap-2 p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors text-white"
-              >
-                <FileJson className="w-5 h-5 text-neon-cyan" />
-                <span className="text-sm">Export JSON</span>
-              </button>
-              <button
-                onClick={() => exportToCSV(disasters, 'geoalert-disasters.csv')}
-                className="flex items-center justify-center gap-2 p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors text-white"
-              >
-                <FileSpreadsheet className="w-5 h-5 text-green-400" />
-                <span className="text-sm">Export CSV</span>
-              </button>
-            </div>
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md z-50 animate-scale-in">
+        <div className="glass-card rounded-2xl border border-white/[0.08] shadow-2xl">
+          {/* Header */}
+          <div className="flex items-center justify-between p-5 border-b border-white/[0.06]">
+            <h2 className="text-lg font-bold text-white flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan/20 to-blue-500/10 flex items-center justify-center border border-neon-cyan/20">
+                <Download className="w-4 h-4 text-neon-cyan" />
+              </div>
+              Export & Share
+            </h2>
+            <button
+              onClick={onClose}
+              className="p-2.5 hover:bg-white/[0.06] rounded-xl transition-all duration-300 border border-transparent hover:border-white/10"
+            >
+              <X className="w-5 h-5 text-gray-400" />
+            </button>
           </div>
 
-          {/* Export Stats */}
-          <div className="p-3 bg-white/5 rounded-lg">
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="text-gray-500">Disaster Events</span>
-                <div className="text-white font-mono text-lg">{disasters.length}</div>
-              </div>
-              <div>
-                <span className="text-gray-500">Weather Stations</span>
-                <div className="text-white font-mono text-lg">{weather.length}</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Share Selected Event */}
-          {selectedEvent && (
+          {/* Content */}
+          <div className="p-5 space-y-6">
+            {/* Export Options */}
             <div>
-              <label className="text-sm font-medium text-gray-400 mb-3 flex items-center gap-2">
-                <Share2 className="w-4 h-4" />
-                Share Selected Event
-              </label>
-              <div className="p-3 bg-white/5 rounded-lg mb-3">
-                <p className="text-sm text-white truncate">
-                  {'id' in selectedEvent ? selectedEvent.title : `${selectedEvent.city}, ${selectedEvent.country}`}
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <div className="flex-1 flex items-center gap-2 px-3 py-2 bg-white/5 rounded-lg">
-                  <Link2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                  <input
-                    type="text"
-                    value={shareLink}
-                    readOnly
-                    className="flex-1 bg-transparent text-sm text-gray-300 focus:outline-none"
-                  />
-                </div>
+              <label className="text-[10px] font-medium text-gray-500 uppercase tracking-widest mb-3 block">Export All Data</label>
+              <div className="grid grid-cols-2 gap-3">
                 <button
-                  onClick={() => copyToClipboard(shareLink)}
-                  className="px-3 py-2 bg-neon-cyan/20 text-neon-cyan rounded-lg hover:bg-neon-cyan/30 transition-colors"
+                  onClick={() => exportToJSON({ disasters, weather, exportedAt: new Date().toISOString() }, 'geoalert-data.json')}
+                  className="flex items-center justify-center gap-2 p-4 bg-white/[0.03] hover:bg-white/[0.06] rounded-xl transition-all duration-300 text-white border border-white/[0.04] hover:border-neon-cyan/20 group"
                 >
-                  {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                  <FileJson className="w-5 h-5 text-neon-cyan group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium">Export JSON</span>
+                </button>
+                <button
+                  onClick={() => exportToCSV(disasters, 'geoalert-disasters.csv')}
+                  className="flex items-center justify-center gap-2 p-4 bg-white/[0.03] hover:bg-white/[0.06] rounded-xl transition-all duration-300 text-white border border-white/[0.04] hover:border-green-500/20 group"
+                >
+                  <FileSpreadsheet className="w-5 h-5 text-green-400 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium">Export CSV</span>
                 </button>
               </div>
             </div>
-          )}
 
-          {/* Quick Actions */}
-          <div className="grid grid-cols-2 gap-3">
+            {/* Export Stats */}
+            <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04]">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-[10px] text-gray-500 uppercase tracking-widest">Disaster Events</span>
+                  <div className="text-white font-mono text-lg mt-1">{disasters.length}</div>
+                </div>
+                <div>
+                  <span className="text-[10px] text-gray-500 uppercase tracking-widest">Weather Stations</span>
+                  <div className="text-white font-mono text-lg mt-1">{weather.length}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Share Selected Event */}
+            {selectedEvent && (
+              <div>
+                <label className="text-[10px] font-medium text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <Share2 className="w-3.5 h-3.5" />
+                  Share Selected Event
+                </label>
+                <div className="p-3.5 bg-white/[0.03] rounded-xl mb-3 border border-white/[0.04]">
+                  <p className="text-sm text-white truncate font-medium">
+                    {'id' in selectedEvent ? selectedEvent.title : `${selectedEvent.city}, ${selectedEvent.country}`}
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <div className="flex-1 flex items-center gap-2 px-3.5 py-2.5 bg-white/[0.03] rounded-xl border border-white/[0.06]">
+                    <Link2 className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                    <input
+                      type="text"
+                      value={shareLink}
+                      readOnly
+                      className="flex-1 bg-transparent text-sm text-gray-300 focus:outline-none font-mono"
+                    />
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard(shareLink)}
+                    className="px-4 py-2.5 bg-gradient-to-r from-neon-cyan/15 to-blue-500/15 text-neon-cyan rounded-xl border border-neon-cyan/30 hover:border-neon-cyan/50 transition-all duration-300"
+                  >
+                    {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Quick Actions */}
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => {
+                  const severeEvents = disasters.filter(d => 
+                    d.severity === 'severe' || d.severity === 'extreme' || d.severity === 'catastrophic'
+                  );
+                  exportToJSON(severeEvents, 'geoalert-severe-events.json');
+                }}
+                className="p-3.5 bg-orange-500/10 hover:bg-orange-500/15 rounded-xl transition-all duration-300 text-orange-400 text-sm font-medium border border-orange-500/20 hover:border-orange-500/30"
+              >
+                Export Severe+ Only
+              </button>
+              <button
+                onClick={() => {
+                  const earthquakes = disasters.filter(d => d.category === 'earthquakes');
+                  exportToCSV(earthquakes, 'geoalert-earthquakes.csv');
+                }}
+                className="p-3.5 bg-neon-purple/10 hover:bg-neon-purple/15 rounded-xl transition-all duration-300 text-neon-purple text-sm font-medium border border-neon-purple/20 hover:border-neon-purple/30"
+              >
+                Export Earthquakes
+              </button>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="p-5 border-t border-white/[0.06] flex justify-end">
             <button
-              onClick={() => {
-                const severeEvents = disasters.filter(d => 
-                  d.severity === 'severe' || d.severity === 'extreme' || d.severity === 'catastrophic'
-                );
-                exportToJSON(severeEvents, 'geoalert-severe-events.json');
-              }}
-              className="p-3 bg-orange-500/10 hover:bg-orange-500/20 rounded-lg transition-colors text-orange-400 text-sm"
+              onClick={onClose}
+              className="px-5 py-2.5 bg-white/[0.03] text-gray-300 rounded-xl hover:bg-white/[0.06] transition-all duration-300 text-sm font-medium border border-white/[0.06] hover:border-white/10"
             >
-              Export Severe+ Only
-            </button>
-            <button
-              onClick={() => {
-                const earthquakes = disasters.filter(d => d.category === 'earthquakes');
-                exportToCSV(earthquakes, 'geoalert-earthquakes.csv');
-              }}
-              className="p-3 bg-neon-purple/10 hover:bg-neon-purple/20 rounded-lg transition-colors text-neon-purple text-sm"
-            >
-              Export Earthquakes
+              Close
             </button>
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="p-4 border-t border-white/10 flex justify-end">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-white/5 text-gray-300 rounded-lg hover:bg-white/10 transition-colors"
-          >
-            Close
-          </button>
         </div>
       </div>
     </>
